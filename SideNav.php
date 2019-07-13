@@ -80,6 +80,17 @@ class SideNav extends \yii\widgets\Menu
      * @var array options for the sidenav heading
      */
     public $headingOptions = [];
+    
+    /**
+     * @var array string/boolean the sidenav footer. This is not HTML encoded
+     * When set to false or null, no footer will be displayed.
+     */
+    public $footer = false;
+    
+    /**
+     * @var array options for the sidenav footer
+     */
+    public $footerOptions = [];
 
     /**
      * @var array options for the sidenav container
@@ -159,10 +170,15 @@ class SideNav extends \yii\widgets\Menu
             Html::addCssClass($this->headingOptions, 'panel-heading');
             $heading = Html::tag('div', '<h3 class="panel-title">' . $this->heading . '</h3>', $this->headingOptions);
         }
+        $footer = '';
+        if (!empty($this->footer)) {
+            Html::addCssClass($this->footerOptions, 'panel-footer');
+            $footer = Html::tag('div', $this->footer, $this->footerOptions);
+        }
         $body = Html::tag('div', $this->renderMenu(), ['class' => 'table']);
         $type = in_array($this->type, self::$_validTypes) ? $this->type : self::TYPE_DEFAULT;
         Html::addCssClass($this->containerOptions, "panel panel-{$type}");
-        echo Html::tag('div', $heading . $body, $this->containerOptions);
+        echo Html::tag('div', $heading . $body . $footer, $this->containerOptions);
     }
 
     /**
